@@ -1,0 +1,115 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import '../assets/styles/normalize.css';
+import '../assets/styles/site.scss';
+
+interface Props {
+  isHome: boolean;
+  title?: string;
+  description?: string;
+}
+
+let {
+  isHome,
+  title,
+  description
+} = Astro.props;
+
+title = isHome ? SITE_TITLE : title || SITE_TITLE;
+description = description || SITE_DESCRIPTION;
+---
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="{{ .Site.Params.author }}">
+  <title>{ title}</title>
+  <meta name="description" content={description}>
+  <!--{{ template "_internal/opengraph.html" . }}
+  {{ template "_internal/schema.html" . }}
+  <link rel="canonical" href="{{ .Permalink }}">-->
+  <link rel="icon" href="/assets/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://rsms.me" crossorigin>
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/fantasque-sans-mono" rel="stylesheet">
+  <link rel="alternate" type="application/atom+xml" title="{{ .Site.Title }}" href="{{ .Site.BaseURL }}/atom.xml" />
+  <link rel="alternate" type="application/json" title="{{ .Site.Title }}" href="{{ .Site.BaseURL }}/feed.json" />
+<!--
+  {{ $styles_reset := resources.Get "css/normalize.css" | toCSS (dict "outputStyle" "compressed") | minify }}
+  {{ $styles := resources.Get "scss/styles.scss" | toCSS (dict "outputStyle" "compressed") | minify }}
+  <style>
+    {{ $styles_reset.Content | safeCSS }}
+    {{ $styles.Content | safeCSS }}
+  </style>
+
+  {{ if .IsHome }}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "{{ .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}",
+    "description": "{{ .Site.Params.description }}",
+    "thumbnailUrl": "{{ .Site.Params.Logo | absURL }}",
+    "license": "{{ .Site.Params.Copyright }}"
+  }
+  </script>
+  {{ else if .IsPage }}
+  {{ $author :=  or (.Params.author) (.Site.Params.author) }}
+  {{ $org_name :=  .Site.Title }}
+  <script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "BlogPosting",
+    "articleSection": "{{ .Section }}",
+    "name": "{{ .Title | safeJS }}",
+    "headline": "{{ .Title | safeJS }}",
+    "alternativeHeadline": "{{ .Params.lead }}",
+    "description": "{{ if .Description }}{{ .Description | safeJS }}{{ else }}{{if .IsPage}}{{ .Summary  }}{{ end }}{{ end }}",
+    "inLanguage": {{ .Site.LanguageCode | default "en-us" }},
+    "isFamilyFriendly": "true",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ .Permalink }}"
+    },
+    "author" : {
+        "@type": "Person",
+        "name": "{{ $author }}"
+    },
+    "creator" : {
+        "@type": "Person",
+        "name": "{{ $author }}"
+    },
+    "accountablePerson" : {
+        "@type": "Person",
+        "name": "{{ $author }}"
+    },
+    "copyrightHolder" : "{{ $org_name }}",
+    "copyrightYear" : "{{ .Date.Format "2006" }}",
+    "dateCreated": "{{ .Date.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
+    "datePublished": "{{ .PublishDate.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
+    "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05.00Z" | safeHTML }}",
+    "publisher":{
+        "@type":"Organization",
+        "name": {{ $org_name }},
+        "url": {{ .Site.BaseURL }},
+        "logo": {
+            "@type": "ImageObject",
+            "url": "{{ .Site.Params.logo | absURL }}",
+            "width":"32",
+            "height":"32"
+        }
+    },
+    "image": {{ if .Params.images }}[{{ range $i, $e := .Params.images }}{{ if $i }}, {{ end }}{{ $e | absURL }}{{ end }}]{{ else}}{{.Site.Params.logo | absURL }}{{ end }},
+    "url" : "{{ .Permalink }}",
+    "wordCount" : "{{ .WordCount }}",
+    "genre" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}],
+    "keywords" : [ {{ range $index, $tag := .Params.tags }}{{ if $index }}, {{ end }}"{{ $tag }}" {{ end }}]
+  }
+  </script>
+  {{ end }}-->
+</head>
